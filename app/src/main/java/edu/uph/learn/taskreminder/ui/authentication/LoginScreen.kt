@@ -5,23 +5,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import edu.uph.learn.taskreminder.ui.component.FormField
 import edu.uph.learn.taskreminder.ui.component.Header
+import edu.uph.learn.taskreminder.ui.component.PasswordField
 import edu.uph.learn.taskreminder.ui.component.PrimaryButton
 import edu.uph.learn.taskreminder.ui.component.SubtextButton
 import edu.uph.learn.taskreminder.ui.theme.ColdBackground
@@ -43,7 +42,7 @@ fun LoginScreen(
     // Form State
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(ColdBackground)
@@ -56,80 +55,63 @@ fun LoginScreen(
             text = "Make every deadline",
             color = Ink,
             style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 27.sp,
+            fontFamily = interFamily
         )
         Text(
             text = "feel manageable.",
             color = PrimaryTeal,
             style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 27.sp,
+            fontFamily = interFamily
         )
 
         Spacer(Modifier.height(16.dp))
 
         Text(
             color = MutedText,
-            text = "Keep your assignments organised and get a gentle nudge before they're due."
+            text = "Keep your assignments organised and",
+            fontSize = 14.sp,
+            fontFamily = interFamily
+        )
+        Text(
+            color = MutedText,
+            text = "get a gentle nudge before they're due.",
+            fontSize = 14.sp,
+            fontFamily = interFamily
         )
 
-        Spacer(Modifier.height(64.dp))
+        Spacer(Modifier.height(48.dp))
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(0.dp)
-        ) {
-            Text(
-                text = "Email Address",
-                fontWeight = FontWeight.SemiBold,
-                fontFamily = interFamily
-            )
-            OutlinedTextField(
-                value = email,
-                onValueChange = {
-                    email = it
-                    errorMessage = null
-                },
-                placeholder = {
-                    Text(
-                        text = "you@example.com",
-                        fontFamily = interFamily
-                    )
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        FormField(
+            label = "Email Address",
+            value = email,
+            onValueChange = {
+                email = it
+                errorMessage = null
+            },
+            placeholder = "you@example.com"
+        )
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(24.dp))
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(0.dp)
-        ) {
-            Text(
-                text = "Password",
-                fontWeight = FontWeight.SemiBold,
-                fontFamily = interFamily
-            )
-            OutlinedTextField(
-                value = password,
-                onValueChange = {
-                    password = it
-                    errorMessage = null
-                },
-                placeholder = {
-                    Text(
-                        text = "Enter your passowrd",
-                        fontFamily = interFamily
-                    )
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        Spacer(Modifier.height(8.dp))
+        PasswordField(
+            label = "Password",
+            value = password,
+            onValueChange = {
+                password = it
+                errorMessage = null
+            },
+            placeholder = "Enter your password"
+        )
 
-        SubtextButton("Forgot password?", onClickResetPassword, horizontalArrangement = Arrangement.End)
+        SubtextButton(
+            "Forgot password?",
+            onClickResetPassword,
+            horizontalArrangement = Arrangement.End
+        )
 
         Spacer(Modifier.height(16.dp))
 

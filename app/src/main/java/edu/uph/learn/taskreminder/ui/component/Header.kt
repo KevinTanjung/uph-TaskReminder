@@ -25,10 +25,12 @@ fun Header() {
         horizontalArrangement = Arrangement.Start
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo_small),
+            painter = painterResource(id = R.drawable.logo_splash),
             contentDescription = "Task Reminder logo",
             contentScale = ContentScale.Fit,
-            modifier = Modifier.size(40.dp).padding(end = 8.dp)
+            modifier = Modifier
+                .size(48.dp)
+                .padding(end = 12.dp)
         )
 
         Text(

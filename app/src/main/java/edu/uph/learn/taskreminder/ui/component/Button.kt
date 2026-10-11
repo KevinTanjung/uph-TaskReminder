@@ -1,5 +1,6 @@
 package edu.uph.learn.taskreminder.ui.component
 
+import androidx.annotation.Size
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import edu.uph.learn.taskreminder.ui.theme.PrimaryTeal
 import edu.uph.learn.taskreminder.ui.theme.interFamily
 
@@ -36,7 +39,8 @@ fun PrimaryButton(
     ) {
         Text(
             text = label,
-            color = Color.White
+            color = Color.White,
+            fontSize = 16.sp
         )
     }
 }
@@ -46,6 +50,7 @@ fun SubtextButton(
     label: String,
     onClick: () -> Unit,
     preface: String? = null,
+    fontSize: TextUnit = 14.sp,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Center
 ) {
     Row(
@@ -53,7 +58,13 @@ fun SubtextButton(
         horizontalArrangement = horizontalArrangement,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        preface?.let { Text("$it ", fontFamily = interFamily) }
+        preface?.let {
+            Text(
+                text = "$it ",
+                fontSize = fontSize,
+                fontFamily = interFamily
+            )
+        }
         TextButton(
             onClick = onClick,
             contentPadding = PaddingValues(horizontal = 0.dp)
@@ -61,10 +72,17 @@ fun SubtextButton(
             Text(
                 text = label,
                 fontWeight = FontWeight.Bold,
+                fontSize = fontSize,
                 fontFamily = interFamily,
                 color = PrimaryTeal
             )
         }
-        preface?.let { Text(".", fontFamily = interFamily) }
+        preface?.let {
+            Text(
+                text = ".",
+                fontSize = fontSize,
+                fontFamily = interFamily
+            )
+        }
     }
 }
