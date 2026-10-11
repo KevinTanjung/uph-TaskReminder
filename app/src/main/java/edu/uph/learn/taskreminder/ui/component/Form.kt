@@ -29,6 +29,7 @@ fun FormField(
     onValueChange: (String) -> Unit,
     placeholder: String = "",
     content: (@Composable ColumnScope.() -> Unit)? = null,
+    hint: String? = null,
     isPassword: Boolean = false
 ) {
     Column(
@@ -79,6 +80,14 @@ fun FormField(
                     focusedPlaceholderColor = MutedText
                 )
             )
+            if (hint != null) {
+                Text(
+                    text = hint,
+                    color = MutedText,
+                    fontSize = 11.sp,
+                    fontFamily = interFamily
+                )
+            }
         }
     }
 }
@@ -89,7 +98,16 @@ fun PasswordField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String = "",
-    content: (@Composable ColumnScope.() -> Unit)? = null
+    content: (@Composable ColumnScope.() -> Unit)? = null,
+    hint: String? = null
 ) {
-    FormField(label, value, onValueChange, placeholder, content, true)
+    FormField(
+        label,
+        value,
+        onValueChange,
+        placeholder,
+        content,
+        hint,
+        true
+    )
 }

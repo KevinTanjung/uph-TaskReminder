@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,6 +47,7 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .background(ColdBackground)
             .padding(24.dp)
     ) {
@@ -67,9 +70,7 @@ fun LoginScreen(
             fontSize = 27.sp,
             fontFamily = interFamily
         )
-
         Spacer(Modifier.height(16.dp))
-
         Text(
             color = MutedText,
             text = "Keep your assignments organised and",

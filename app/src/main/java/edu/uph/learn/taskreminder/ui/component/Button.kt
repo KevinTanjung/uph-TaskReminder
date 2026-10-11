@@ -77,12 +77,5 @@ fun SubtextButton(
                 color = PrimaryTeal
             )
         }
-        preface?.let {
-            Text(
-                text = ".",
-                fontSize = fontSize,
-                fontFamily = interFamily
-            )
-        }
     }
 }
