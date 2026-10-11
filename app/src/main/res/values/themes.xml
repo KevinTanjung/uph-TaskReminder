@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.TaskReminder" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.TaskReminder.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#F7F9F5</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_splash_small</item>
+        <item name="postSplashScreenTheme">@style/Theme.TaskReminder</item>
+    </style>
 </resources>
