@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uph.learn.taskreminder.R
+import edu.uph.learn.taskreminder.ui.theme.ColdBackground
 import edu.uph.learn.taskreminder.ui.theme.Ink
 import edu.uph.learn.taskreminder.ui.theme.MutedText
 import edu.uph.learn.taskreminder.ui.theme.WarmBackground
@@ -38,7 +39,7 @@ fun SplashScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(WarmBackground),
+            .background(ColdBackground),
         contentAlignment = Alignment.Center
     ) {
         Column(
