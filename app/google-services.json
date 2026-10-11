@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "623547450106",
+    "project_id": "taskreminder-4755e",
+    "storage_bucket": "taskreminder-4755e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623547450106:android:c674c821c76724032dbf43",
+        "android_client_info": {
+          "package_name": "edu.uph.learn.taskreminder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLWwveAn37334gHjKFyd14yAfUfugCWWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
