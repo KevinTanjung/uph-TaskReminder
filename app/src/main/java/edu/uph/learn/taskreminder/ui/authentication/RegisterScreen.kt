@@ -70,6 +70,7 @@ fun RegisterScreen(
 
         Spacer(Modifier.height(24.dp))
 
+        // Form Section
         FormField(
             label = "Email Address",
             value = email,
@@ -107,6 +108,7 @@ fun RegisterScreen(
 
         Spacer(Modifier.height(16.dp))
 
+        // Action Section
         PrimaryButton(label = "Create Account", onClick = onRegisterSuccess)
 
         Spacer(Modifier.height(16.dp))

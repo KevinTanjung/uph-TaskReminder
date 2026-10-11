@@ -134,6 +134,9 @@ fun AppNavigation() {
             ResetPasswordScreen(
                 onBackToLogin = {
                     navController.popBackStack()
+                },
+                onResetPassword = {
+                    navController.navigate(Routes.LOGIN)
                 }
             )
         }

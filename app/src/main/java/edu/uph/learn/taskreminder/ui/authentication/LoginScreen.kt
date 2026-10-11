@@ -86,6 +86,7 @@ fun LoginScreen(
 
         Spacer(Modifier.height(48.dp))
 
+        // Form Section
         FormField(
             label = "Email Address",
             value = email,
@@ -107,6 +108,8 @@ fun LoginScreen(
             },
             placeholder = "Enter your password"
         )
+
+        // Action Section
 
         SubtextButton(
             "Forgot password?",
