@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -39,38 +40,34 @@ fun SplashScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(ColdBackground),
-        contentAlignment = Alignment.Center
+            .background(ColdBackground)
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo_splash),
+            contentDescription = "TaskReminder Logo",
+            modifier = Modifier
+                .size(100.dp)
+                .align(Alignment.Center)
+        )
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier
+                .align(Alignment.Center)
+                .offset(y = 100.dp + 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo_splash),
-                contentDescription = "TaskReminder Logo",
-                modifier = Modifier.size(100.dp)
-            )
-            Spacer(
-                modifier = Modifier.height(32.dp)
-            )
             Text(
                 text = "Task Reminder",
                 fontSize = 27.sp,
                 fontWeight = FontWeight.Bold,
                 color = Ink
             )
-            Spacer(
-                modifier = Modifier.height(8.dp)
-            )
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Plan clearly. Meet every deadline.",
                 fontSize = 13.sp,
                 color = MutedText
             )
-            Spacer(
-                modifier = Modifier.height(42.dp)
-            )
+            Spacer(modifier = Modifier.height(42.dp))
             LoadingDots()
         }
     }
