@@ -166,13 +166,7 @@ fun AppNavigation() {
             composable(Routes.LOGIN) {
                 LoginScreen(
                     onLoginSuccess = {
-                        // temporary, Firebase AuthStateListener should handle navigation.
-                        navController.navigate(Routes.DASHBOARD) {
-                            popUpTo(Routes.LOGIN) {
-                                inclusive = true
-                            }
-                            launchSingleTop = true
-                        }
+                        // Navigation is handled by AuthStateListener.
                     },
                     onClickRegister = {
                         navController.navigate(Routes.REGISTER)

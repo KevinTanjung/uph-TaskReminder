@@ -19,6 +19,7 @@ object AuthService {
         email: String,
         password: String
     ): FirebaseUser {
+        // TODO: add passwordConfirmation, validation and field-level error handling
         val authResult = auth.createUserWithEmailAndPassword(
             email.trim(),
             password
@@ -27,6 +28,18 @@ object AuthService {
         return authResult.user
             ?: throw IllegalStateException(
                 "Registration succeeded without returning a user."
+            )
+    }
+
+    suspend fun login(
+        email: String,
+        password: String
+    ): FirebaseUser {
+        val authResult = auth.signInWithEmailAndPassword(email, password).await()
+
+        return authResult.user
+            ?: throw IllegalStateException(
+                "Login succeeded without returning a user."
             )
     }
 

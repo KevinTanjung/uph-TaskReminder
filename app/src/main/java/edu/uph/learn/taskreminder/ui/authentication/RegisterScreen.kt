@@ -145,6 +145,7 @@ fun RegisterScreen(
                         Log.d("RegisterScreen", "User registered: ${user.uid}")
                         onRegisterSuccess();
                     } catch (e: Exception) {
+                        Log.e("LoginScreen", "Exception on register: ${e.message}", e)
                         errorMessage = when (e) {
                             is FirebaseNetworkException -> "Network error. Please try again."
                             is FirebaseAuthException -> "Registration failed. Please check your details and try again."
