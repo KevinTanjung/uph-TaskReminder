@@ -1,5 +1,6 @@
 package edu.uph.learn.taskreminder.data.auth
 
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
@@ -65,6 +66,30 @@ object AuthService {
      */
     suspend fun sendPasswordResetEmail(email: String) {
         auth.sendPasswordResetEmail(email.trim()).await()
+    }
+
+    /**
+     * Changes the password of the currently authenticated user.
+     *
+     * Reauthenticates the user with their current email and password
+     * before updating the password.
+     *
+     * @param oldPassword The user's existing password.
+     * @param newPassword The new password to set.
+     * @throws IllegalStateException if no authenticated user or email exists.
+     * @throws Exception if reauthentication or password update fails.
+     */
+    suspend fun editPassword(
+        oldPassword: String,
+        newPassword: String
+    ): FirebaseUser {
+        val user = auth.currentUser ?: throw IllegalStateException("No authenticated user found.")
+        val email = user.email ?: throw IllegalStateException("The authenticated user has no email address.")
+        val credential = EmailAuthProvider.getCredential(email, oldPassword)
+
+        user.reauthenticate(credential).await()
+        user.updatePassword(newPassword).await()
+        return user
     }
 
     /**

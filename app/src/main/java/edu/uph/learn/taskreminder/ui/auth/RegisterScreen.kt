@@ -28,7 +28,7 @@ import edu.uph.learn.taskreminder.data.auth.AuthService
 import edu.uph.learn.taskreminder.domain.auth.AuthField
 import edu.uph.learn.taskreminder.domain.auth.AuthFormValidator
 import edu.uph.learn.taskreminder.ui.component.FormField
-import edu.uph.learn.taskreminder.ui.component.Header
+import edu.uph.learn.taskreminder.ui.component.ExternalHeader
 import edu.uph.learn.taskreminder.ui.component.PasswordField
 import edu.uph.learn.taskreminder.ui.component.PrimaryButton
 import edu.uph.learn.taskreminder.ui.component.SubtextButton
@@ -63,7 +63,7 @@ fun RegisterScreen(
             .background(ColdBackground)
             .padding(24.dp)
     ) {
-        Header()
+        ExternalHeader()
 
         // Top Section
         Text(

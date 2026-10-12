@@ -27,6 +27,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import edu.uph.learn.taskreminder.data.auth.AuthService
+import edu.uph.learn.taskreminder.ui.auth.EditPasswordScreen
 import edu.uph.learn.taskreminder.ui.auth.LoginScreen
 import edu.uph.learn.taskreminder.ui.auth.RegisterScreen
 import edu.uph.learn.taskreminder.ui.auth.ResetPasswordScreen
@@ -213,7 +214,11 @@ fun AppNavigation() {
                 )
             }
             composable(Routes.EDIT_PASSWORD) {
-                PlaceholderScreen("Edit Password")
+                EditPasswordScreen(
+                    onBackToProfile = {
+                        navController.popBackStack()
+                    }
+                )
             }
             composable(Routes.EDIT_SCHEDULE) {
                 PlaceholderScreen("Edit Schedule")
