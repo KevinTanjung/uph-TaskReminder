@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -18,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -31,12 +34,15 @@ import edu.uph.learn.taskreminder.ui.auth.EditPasswordScreen
 import edu.uph.learn.taskreminder.ui.auth.LoginScreen
 import edu.uph.learn.taskreminder.ui.auth.RegisterScreen
 import edu.uph.learn.taskreminder.ui.auth.ResetPasswordScreen
+import edu.uph.learn.taskreminder.ui.component.Snackbar
+import edu.uph.learn.taskreminder.ui.component.SnackbarType
 import edu.uph.learn.taskreminder.ui.component.TaskBottomBar
 import edu.uph.learn.taskreminder.ui.dashboard.DashboardScreen
 import edu.uph.learn.taskreminder.ui.profile.ProfileScreen
 import edu.uph.learn.taskreminder.ui.splash.SplashScreen
 import edu.uph.learn.taskreminder.ui.theme.WarmBackground
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 object Routes {
@@ -64,10 +70,13 @@ private val protectedRoutes = mainRoutes + setOf(
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     var splashTimeElapsed by remember { mutableStateOf(false) }
     var authStateResolved by remember { mutableStateOf(false) }
     var isAuthenticated by remember { mutableStateOf(false) }
+    var snackbarType by remember { mutableStateOf(SnackbarType.SUCCESS) }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -131,6 +140,11 @@ fun AppNavigation() {
     }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { snackbarData ->
+                Snackbar(snackbarData, snackbarType)
+            }
+        },
         bottomBar = {
             if (currentRoute in mainRoutes) {
                 TaskBottomBar(
@@ -216,6 +230,15 @@ fun AppNavigation() {
             composable(Routes.EDIT_PASSWORD) {
                 EditPasswordScreen(
                     onBackToProfile = {
+                        navController.popBackStack()
+                    },
+                    onPasswordUpdated = {
+                        snackbarType = SnackbarType.SUCCESS
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "Password updated successfully."
+                            )
+                        }
                         navController.popBackStack()
                     }
                 )
