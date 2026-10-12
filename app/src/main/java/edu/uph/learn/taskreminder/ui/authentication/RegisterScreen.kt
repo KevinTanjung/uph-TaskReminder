@@ -30,6 +30,7 @@ import edu.uph.learn.taskreminder.ui.component.PasswordField
 import edu.uph.learn.taskreminder.ui.component.PrimaryButton
 import edu.uph.learn.taskreminder.ui.component.SubtextButton
 import edu.uph.learn.taskreminder.ui.theme.ColdBackground
+import edu.uph.learn.taskreminder.ui.theme.CoralAccent
 import edu.uph.learn.taskreminder.ui.theme.Ink
 import edu.uph.learn.taskreminder.ui.theme.MutedText
 import edu.uph.learn.taskreminder.ui.theme.interFamily
@@ -121,7 +122,7 @@ fun RegisterScreen(
         errorMessage?.let { message ->
             Text(
                 text = message,
-                color = MaterialTheme.colorScheme.error,
+                color = CoralAccent,
                 fontSize = 14.sp,
                 fontFamily = interFamily
             )

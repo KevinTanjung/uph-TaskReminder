@@ -190,9 +190,6 @@ fun AppNavigation() {
                 ResetPasswordScreen(
                     onBackToLogin = {
                         navController.popBackStack()
-                    },
-                    onResetPassword = {
-                        navController.popBackStack()
                     }
                 )
             }
