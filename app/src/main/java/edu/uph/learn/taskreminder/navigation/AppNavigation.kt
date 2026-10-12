@@ -32,6 +32,7 @@ import edu.uph.learn.taskreminder.ui.auth.RegisterScreen
 import edu.uph.learn.taskreminder.ui.auth.ResetPasswordScreen
 import edu.uph.learn.taskreminder.ui.component.TaskBottomBar
 import edu.uph.learn.taskreminder.ui.dashboard.DashboardScreen
+import edu.uph.learn.taskreminder.ui.profile.ProfileScreen
 import edu.uph.learn.taskreminder.ui.splash.SplashScreen
 import edu.uph.learn.taskreminder.ui.theme.WarmBackground
 import kotlinx.coroutines.delay
@@ -192,17 +193,24 @@ fun AppNavigation() {
                 )
             }
             composable(Routes.DASHBOARD) {
-                DashboardScreen(
-                    onLogout = {
-                        AuthService.signOut()
-                    }
-                )
+                DashboardScreen()
             }
             composable(Routes.CALENDAR) {
                 PlaceholderScreen("Calendar")
             }
             composable(Routes.PROFILE) {
-                PlaceholderScreen("Profile")
+                ProfileScreen(
+                    email = AuthService.getCurrentUser()?.email.orEmpty(),
+                    onClickEditPassword = {
+                        navController.navigate(Routes.EDIT_PASSWORD)
+                    },
+                    onClickReminderSettings = {
+                        navController.navigate(Routes.EDIT_SCHEDULE)
+                    },
+                    onLogout = {
+                        AuthService.signOut()
+                    }
+                )
             }
             composable(Routes.EDIT_PASSWORD) {
                 PlaceholderScreen("Edit Password")

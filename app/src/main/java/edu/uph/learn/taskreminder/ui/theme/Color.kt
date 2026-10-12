@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 val PrimaryTeal = Color(0xFF2E575E)
 val SoftMint = Color(0xFFDBEBE6)
+val SoftMintLight = Color(0xFFDEE5E1)
 val WarmBackground = Color(0xFFF7F9F5)
 val ColdBackground = Color(0xFFF6F8F5)
 val Ink = Color(0xFF17292B)

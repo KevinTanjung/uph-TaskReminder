@@ -16,9 +16,7 @@ import androidx.compose.ui.unit.dp
 import edu.uph.learn.taskreminder.ui.theme.WarmBackground
 
 @Composable
-fun DashboardScreen(
-    onLogout: () -> Unit
-) {
+fun DashboardScreen() {
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -31,14 +29,6 @@ fun DashboardScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Dashboard")
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = onLogout
-            ) {
-                Text("Log Out")
-            }
         }
     }
 }
