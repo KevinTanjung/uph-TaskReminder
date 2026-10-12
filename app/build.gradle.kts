@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.devtools.ksp)
 }
 
 android {
@@ -55,6 +56,10 @@ dependencies {
     implementation(libs.firebase.auth)
 
     implementation(libs.jetbrains.kotlin.coroutinesplayservices)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

@@ -6,11 +6,13 @@ coreSplashscreen = "1.2.0"
 coroutinePlayServices = "1.11.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
+roomVersion = "2.8.5"
 espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 navigationCompose = "2.9.6"
 kotlin = "2.2.10"
+ksp = "2.2.10-2.0.2"
 composeBom = "2026.02.01"
 firebaseBom = "34.19.0"
 
@@ -36,8 +38,12 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth"  }
 jetbrains-kotlin-coroutinesplayservices = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutinePlayServices" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
