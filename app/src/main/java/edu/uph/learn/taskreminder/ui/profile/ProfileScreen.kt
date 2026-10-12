@@ -39,7 +39,6 @@ import edu.uph.learn.taskreminder.ui.theme.Danger
 import edu.uph.learn.taskreminder.ui.theme.Ink
 import edu.uph.learn.taskreminder.ui.theme.MutedText
 import edu.uph.learn.taskreminder.ui.theme.PrimaryTeal
-import edu.uph.learn.taskreminder.ui.theme.SoftMint
 import edu.uph.learn.taskreminder.ui.theme.SoftMintLight
 import edu.uph.learn.taskreminder.ui.theme.WarmBackground
 import edu.uph.learn.taskreminder.ui.theme.interFamily

@@ -37,6 +37,7 @@ import edu.uph.learn.taskreminder.ui.auth.ResetPasswordScreen
 import edu.uph.learn.taskreminder.ui.component.Snackbar
 import edu.uph.learn.taskreminder.ui.component.SnackbarType
 import edu.uph.learn.taskreminder.ui.component.TaskBottomBar
+import edu.uph.learn.taskreminder.ui.dashboard.CreateAssignmentScreen
 import edu.uph.learn.taskreminder.ui.dashboard.DashboardScreen
 import edu.uph.learn.taskreminder.ui.profile.ProfileScreen
 import edu.uph.learn.taskreminder.ui.splash.SplashScreen
@@ -247,7 +248,20 @@ fun AppNavigation() {
                 PlaceholderScreen("Edit Schedule")
             }
             composable(Routes.CREATE_ASSIGNMENT) {
-                PlaceholderScreen("Create Assignment")
+                CreateAssignmentScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onCreated = {
+                        snackbarType = SnackbarType.SUCCESS
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "Assignment created successfully."
+                            )
+                        }
+                        navController.popBackStack()
+                    }
+                )
             }
             composable(Routes.VIEW_ASSIGNMENT) {
                 PlaceholderScreen("View Assignment")

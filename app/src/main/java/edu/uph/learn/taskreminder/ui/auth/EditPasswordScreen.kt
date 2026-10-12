@@ -61,6 +61,7 @@ fun EditPasswordScreen(
             .background(ColdBackground)
             .padding(24.dp)
     ) {
+        // Top Section
         InternalHeader(
             title = "Edit Password",
             subtitle = "Choose a strong password to protect your account.",

@@ -35,8 +35,11 @@ fun FormField(
     content: (@Composable ColumnScope.() -> Unit)? = null,
     hint: String? = null,
     isPassword: Boolean = false,
+    minLines: Int? = null,
+    maxLines: Int? = null,
     errorMessage: String? = null,
-    keyboardType: KeyboardType = KeyboardType.Text
+    keyboardType: KeyboardType = KeyboardType.Text,
+    modifier: Modifier? = null
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -74,9 +77,11 @@ fun FormField(
                     VisualTransformation.None
                 },
                 isError = errorMessage != null,
-                singleLine = true,
+                singleLine = minLines == null && maxLines == null,
+                minLines = minLines ?: 1,
+                maxLines = maxLines ?: Int.MAX_VALUE,
                 shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().then(modifier ?: Modifier),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = SoftMint,
                     focusedBorderColor = PrimaryTeal,
@@ -128,6 +133,8 @@ fun PasswordField(
         content,
         hint,
         true,
+        null,
+        null,
         errorMessage
     )
 }
