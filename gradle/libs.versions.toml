@@ -3,6 +3,7 @@ agp = "9.4.1"
 googleServices = "4.5.0"
 coreKtx = "1.19.1"
 coreSplashscreen = "1.2.0"
+coroutinePlayServices = "1.11.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
@@ -34,6 +35,7 @@ androidx-compose-material-icons = { group = "androidx.compose.material", name = 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth"  }
+jetbrains-kotlin-coroutinesplayservices = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutinePlayServices" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

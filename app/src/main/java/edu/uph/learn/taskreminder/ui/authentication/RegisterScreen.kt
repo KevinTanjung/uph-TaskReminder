@@ -1,5 +1,6 @@
 package edu.uph.learn.taskreminder.ui.authentication
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,11 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthException
+import edu.uph.learn.taskreminder.data.auth.AuthService
 import edu.uph.learn.taskreminder.ui.component.FormField
 import edu.uph.learn.taskreminder.ui.component.Header
 import edu.uph.learn.taskreminder.ui.component.PasswordField
@@ -28,6 +33,7 @@ import edu.uph.learn.taskreminder.ui.theme.ColdBackground
 import edu.uph.learn.taskreminder.ui.theme.Ink
 import edu.uph.learn.taskreminder.ui.theme.MutedText
 import edu.uph.learn.taskreminder.ui.theme.interFamily
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
@@ -41,6 +47,9 @@ fun RegisterScreen(
 
     // Form State
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var isRegistering by remember { mutableStateOf(false) }
+
+    val coroutineScope = rememberCoroutineScope()
 
     Column (
         modifier = Modifier
@@ -97,9 +106,9 @@ fun RegisterScreen(
 
         PasswordField(
             label = "Confirm Password",
-            value = password,
+            value = passwordConfirmation,
             onValueChange = {
-                password = it
+                passwordConfirmation = it
                 errorMessage = null
             },
             placeholder = "Re-enter your password",
@@ -109,7 +118,44 @@ fun RegisterScreen(
         Spacer(Modifier.height(16.dp))
 
         // Action Section
-        PrimaryButton(label = "Create Account", onClick = onRegisterSuccess)
+        errorMessage?.let { message ->
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 14.sp,
+                fontFamily = interFamily
+            )
+
+            Spacer(Modifier.height(12.dp))
+        }
+
+        PrimaryButton(
+            label = if (isRegistering) "Creating Account..." else "Create Account",
+            onClick = {
+                if (isRegistering) {
+                    return@PrimaryButton
+                }
+
+                coroutineScope.launch {
+                    isRegistering = true
+                    errorMessage = null
+
+                    try {
+                        val user = AuthService.register(email, password);
+                        Log.d("RegisterScreen", "User registered: ${user.uid}")
+                        onRegisterSuccess();
+                    } catch (e: Exception) {
+                        errorMessage = when (e) {
+                            is FirebaseNetworkException -> "Network error. Please try again."
+                            is FirebaseAuthException -> "Registration failed. Please check your details and try again."
+                            else -> "Something went wrong. Please try again."
+                        }
+                    } finally {
+                        isRegistering = false
+                    }
+                }
+            }
+        )
 
         Spacer(Modifier.height(16.dp))
 

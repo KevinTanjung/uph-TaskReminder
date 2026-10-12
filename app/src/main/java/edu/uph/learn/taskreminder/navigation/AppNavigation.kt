@@ -28,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
+import edu.uph.learn.taskreminder.data.auth.AuthService
 import edu.uph.learn.taskreminder.ui.authentication.LoginScreen
 import edu.uph.learn.taskreminder.ui.authentication.RegisterScreen
 import edu.uph.learn.taskreminder.ui.authentication.ResetPasswordScreen
@@ -63,7 +64,6 @@ private val protectedRoutes = mainRoutes + setOf(
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    val auth = remember { FirebaseAuth.getInstance() }
 
     var splashTimeElapsed by remember { mutableStateOf(false) }
     var authStateResolved by remember { mutableStateOf(false) }
@@ -72,16 +72,14 @@ fun AppNavigation() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    DisposableEffect(auth) {
-        val listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-            val user = firebaseAuth.currentUser
+    DisposableEffect(Unit) {
+        val listener = AuthService.addAuthStateListener { user ->
             Log.d("AppNavigation", "Current user: ${user?.uid ?: "None"}")
             isAuthenticated = user != null
             authStateResolved = true
         }
-        auth.addAuthStateListener(listener)
         onDispose {
-            auth.removeAuthStateListener(listener)
+            AuthService.removeAuthStateListener(listener)
         }
     }
 
@@ -124,11 +122,10 @@ fun AppNavigation() {
             }
             // Logout: return to Login from any protected screen
             !isAuthenticated && currentRoute in protectedRoutes -> {
-                // temporary, uncomment once Firebase Authentication is integrated
-//                navController.navigate(Routes.LOGIN) {
-//                    popUpTo(navController.graph.id) { inclusive = true }
-//                    launchSingleTop = true
-//                }
+                navController.navigate(Routes.LOGIN) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                    launchSingleTop = true
+                }
             }
         }
     }
@@ -188,13 +185,7 @@ fun AppNavigation() {
             composable(Routes.REGISTER) {
                 RegisterScreen(
                     onRegisterSuccess = {
-                        // temporary, Firebase AuthStateListener should handle navigation.
-                        navController.navigate(Routes.DASHBOARD) {
-                            popUpTo(Routes.LOGIN) {
-                                inclusive = true
-                            }
-                            launchSingleTop = true
-                        }
+                        // Navigation is handled by AuthStateListener.
                     },
                     onBackToLogin = {
                         navController.popBackStack()
@@ -214,7 +205,7 @@ fun AppNavigation() {
             composable(Routes.DASHBOARD) {
                 DashboardScreen(
                     onLogout = {
-                        auth.signOut()
+                        AuthService.signOut()
                     }
                 )
             }
