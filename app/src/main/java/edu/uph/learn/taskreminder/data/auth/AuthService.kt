@@ -19,7 +19,6 @@ object AuthService {
         email: String,
         password: String
     ): FirebaseUser {
-        // TODO: add passwordConfirmation, input validation and field-level error handling
         val authResult = auth.createUserWithEmailAndPassword(
             email.trim(),
             password
@@ -44,7 +43,6 @@ object AuthService {
         email: String,
         password: String
     ): FirebaseUser {
-        // TODO: add input validation and field-level error handling
         val authResult = auth.signInWithEmailAndPassword(
             email.trim(),
             password

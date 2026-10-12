@@ -11,6 +11,7 @@ val MutedText = Color(0xFF5C6E6E)
 val CoralAccent = Color(0xFFE39C66)
 val DueSoon = Color(0xFFFCF2D9)
 val Completed = Color(0xFFDEEFDF)
+val Danger = Color(0xFFE35947)
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

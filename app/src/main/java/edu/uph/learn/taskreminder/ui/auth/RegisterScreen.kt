@@ -1,4 +1,4 @@
-package edu.uph.learn.taskreminder.ui.authentication
+package edu.uph.learn.taskreminder.ui.auth
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -19,18 +19,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthException
 import edu.uph.learn.taskreminder.data.auth.AuthService
+import edu.uph.learn.taskreminder.domain.auth.AuthField
+import edu.uph.learn.taskreminder.domain.auth.AuthFormValidator
 import edu.uph.learn.taskreminder.ui.component.FormField
 import edu.uph.learn.taskreminder.ui.component.Header
 import edu.uph.learn.taskreminder.ui.component.PasswordField
 import edu.uph.learn.taskreminder.ui.component.PrimaryButton
 import edu.uph.learn.taskreminder.ui.component.SubtextButton
 import edu.uph.learn.taskreminder.ui.theme.ColdBackground
-import edu.uph.learn.taskreminder.ui.theme.CoralAccent
+import edu.uph.learn.taskreminder.ui.theme.Danger
 import edu.uph.learn.taskreminder.ui.theme.Ink
 import edu.uph.learn.taskreminder.ui.theme.MutedText
 import edu.uph.learn.taskreminder.ui.theme.interFamily
@@ -47,6 +50,7 @@ fun RegisterScreen(
     var passwordConfirmation by remember { mutableStateOf("") }
 
     // Form State
+    var fieldErrors by remember { mutableStateOf(mapOf<AuthField, String>()) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isRegistering by remember { mutableStateOf(false) }
 
@@ -87,8 +91,11 @@ fun RegisterScreen(
             onValueChange = {
                 email = it
                 errorMessage = null
+                fieldErrors = fieldErrors - AuthField.EMAIL
             },
-            placeholder = "you@example.com"
+            placeholder = "you@example.com",
+            errorMessage = fieldErrors[AuthField.EMAIL],
+            keyboardType = KeyboardType.Email
         )
 
         Spacer(Modifier.height(24.dp))
@@ -99,8 +106,10 @@ fun RegisterScreen(
             onValueChange = {
                 password = it
                 errorMessage = null
+                fieldErrors = fieldErrors - AuthField.PASSWORD
             },
-            placeholder = "Enter your password"
+            placeholder = "Enter your password",
+            errorMessage = fieldErrors[AuthField.PASSWORD]
         )
 
         Spacer(Modifier.height(24.dp))
@@ -111,9 +120,11 @@ fun RegisterScreen(
             onValueChange = {
                 passwordConfirmation = it
                 errorMessage = null
+                fieldErrors = fieldErrors - AuthField.PASSWORD_CONFIRMATION
             },
             placeholder = "Re-enter your password",
-            hint = "Both password fields must match."
+            hint = "Both password fields must match.",
+            errorMessage = fieldErrors[AuthField.PASSWORD_CONFIRMATION]
         )
 
         Spacer(Modifier.height(16.dp))
@@ -122,7 +133,7 @@ fun RegisterScreen(
         errorMessage?.let { message ->
             Text(
                 text = message,
-                color = CoralAccent,
+                color = Danger,
                 fontSize = 14.sp,
                 fontFamily = interFamily
             )
@@ -137,21 +148,25 @@ fun RegisterScreen(
                     return@PrimaryButton
                 }
 
+                fieldErrors = AuthFormValidator.validateRegistration(email, password, passwordConfirmation)
+                errorMessage = null
+                if (fieldErrors.isNotEmpty()) {
+                    return@PrimaryButton
+                }
+
                 coroutineScope.launch {
                     isRegistering = true
-                    errorMessage = null
-
                     try {
-                        val user = AuthService.register(email, password);
+                        val user = AuthService.register(email, password)
                         Log.d("RegisterScreen", "User registered: ${user.uid}")
-                        onRegisterSuccess();
+                        onRegisterSuccess()
+                    } catch (e: FirebaseNetworkException) {
+                        errorMessage =  "Network error. Please try again."
+                    } catch (e: FirebaseAuthException) {
+                        errorMessage = "Registration failed. Please check your details and try again."
                     } catch (e: Exception) {
                         Log.e("LoginScreen", "Exception on register: ${e.message}", e)
-                        errorMessage = when (e) {
-                            is FirebaseNetworkException -> "Network error. Please try again."
-                            is FirebaseAuthException -> "Registration failed. Please check your details and try again."
-                            else -> "Something went wrong. Please try again."
-                        }
+                        errorMessage = "Something went wrong. Please try again."
                     } finally {
                         isRegistering = false
                     }

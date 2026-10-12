@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,11 +26,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.auth.FirebaseAuth
 import edu.uph.learn.taskreminder.data.auth.AuthService
-import edu.uph.learn.taskreminder.ui.authentication.LoginScreen
-import edu.uph.learn.taskreminder.ui.authentication.RegisterScreen
-import edu.uph.learn.taskreminder.ui.authentication.ResetPasswordScreen
+import edu.uph.learn.taskreminder.ui.auth.LoginScreen
+import edu.uph.learn.taskreminder.ui.auth.RegisterScreen
+import edu.uph.learn.taskreminder.ui.auth.ResetPasswordScreen
 import edu.uph.learn.taskreminder.ui.component.TaskBottomBar
 import edu.uph.learn.taskreminder.ui.dashboard.DashboardScreen
 import edu.uph.learn.taskreminder.ui.splash.SplashScreen

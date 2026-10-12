@@ -1,4 +1,4 @@
-package edu.uph.learn.taskreminder.ui.authentication
+package edu.uph.learn.taskreminder.ui.auth
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -20,18 +20,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthException
 import edu.uph.learn.taskreminder.data.auth.AuthService
+import edu.uph.learn.taskreminder.domain.auth.AuthField
+import edu.uph.learn.taskreminder.domain.auth.AuthFormValidator
 import edu.uph.learn.taskreminder.ui.component.FormField
 import edu.uph.learn.taskreminder.ui.component.Header
 import edu.uph.learn.taskreminder.ui.component.PasswordField
 import edu.uph.learn.taskreminder.ui.component.PrimaryButton
 import edu.uph.learn.taskreminder.ui.component.SubtextButton
 import edu.uph.learn.taskreminder.ui.theme.ColdBackground
-import edu.uph.learn.taskreminder.ui.theme.CoralAccent
+import edu.uph.learn.taskreminder.ui.theme.Danger
 import edu.uph.learn.taskreminder.ui.theme.Ink
 import edu.uph.learn.taskreminder.ui.theme.MutedText
 import edu.uph.learn.taskreminder.ui.theme.PrimaryTeal
@@ -49,6 +52,7 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
 
     // Form State
+    var fieldErrors by remember { mutableStateOf(mapOf<AuthField, String>()) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isLoggingIn by remember { mutableStateOf(false) }
 
@@ -102,9 +106,12 @@ fun LoginScreen(
             value = email,
             onValueChange = {
                 email = it
+                fieldErrors = fieldErrors - AuthField.EMAIL
                 errorMessage = null
             },
-            placeholder = "you@example.com"
+            placeholder = "you@example.com",
+            errorMessage = fieldErrors[AuthField.EMAIL],
+            keyboardType = KeyboardType.Email
         )
 
         Spacer(Modifier.height(24.dp))
@@ -114,9 +121,11 @@ fun LoginScreen(
             value = password,
             onValueChange = {
                 password = it
+                fieldErrors = fieldErrors - AuthField.PASSWORD
                 errorMessage = null
             },
-            placeholder = "Enter your password"
+            placeholder = "Enter your password",
+            errorMessage = fieldErrors[AuthField.PASSWORD]
         )
 
         // Action Section
@@ -131,7 +140,7 @@ fun LoginScreen(
         errorMessage?.let { message ->
             Text(
                 text = message,
-                color = CoralAccent,
+                color = Danger,
                 fontSize = 14.sp,
                 fontFamily = interFamily
             )
@@ -146,21 +155,27 @@ fun LoginScreen(
                     return@PrimaryButton
                 }
 
+                fieldErrors = AuthFormValidator.validateLogin(email, password)
+                errorMessage = null
+                if (fieldErrors.isNotEmpty()) {
+                    return@PrimaryButton
+                }
+
                 coroutineScope.launch {
                     isLoggingIn = true
                     errorMessage = null
 
                     try {
-                        val user = AuthService.login(email, password);
+                        val user = AuthService.login(email, password)
                         Log.d("LoginScreen", "User logged in: ${user.uid}")
-                        onLoginSuccess();
+                        onLoginSuccess()
+                    } catch (e: FirebaseNetworkException) {
+                        errorMessage =  "Network error. Please try again."
+                    } catch (e: FirebaseAuthException) {
+                        errorMessage = "Login failed. Please check your details and try again."
                     } catch (e: Exception) {
                         Log.e("LoginScreen", "Exception on login: ${e.message}", e)
-                        errorMessage = when (e) {
-                            is FirebaseNetworkException -> "Network error. Please try again."
-                            is FirebaseAuthException -> "Login failed. Please check your details and try again."
-                            else -> "Something went wrong. Please try again."
-                        }
+                        errorMessage = "Something went wrong. Please try again."
                     } finally {
                         isLoggingIn = false
                     }
