@@ -23,12 +23,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import edu.uph.learn.taskreminder.data.assignment.AssignmentDatabase
+import edu.uph.learn.taskreminder.data.assignment.AssignmentRepository
+import edu.uph.learn.taskreminder.data.assignment.AssignmentService
 import edu.uph.learn.taskreminder.data.auth.AuthService
 import edu.uph.learn.taskreminder.ui.auth.EditPasswordScreen
 import edu.uph.learn.taskreminder.ui.auth.LoginScreen
@@ -39,6 +44,8 @@ import edu.uph.learn.taskreminder.ui.component.SnackbarType
 import edu.uph.learn.taskreminder.ui.component.TaskBottomBar
 import edu.uph.learn.taskreminder.ui.dashboard.CreateAssignmentScreen
 import edu.uph.learn.taskreminder.ui.dashboard.DashboardScreen
+import edu.uph.learn.taskreminder.ui.dashboard.DashboardViewModel
+import edu.uph.learn.taskreminder.ui.dashboard.DashboardViewModelFactory
 import edu.uph.learn.taskreminder.ui.profile.ProfileScreen
 import edu.uph.learn.taskreminder.ui.splash.SplashScreen
 import edu.uph.learn.taskreminder.ui.theme.WarmBackground
@@ -209,7 +216,22 @@ fun AppNavigation() {
                 )
             }
             composable(Routes.DASHBOARD) {
-                DashboardScreen()
+                val context = LocalContext.current
+                val dashboardViewModel: DashboardViewModel = viewModel(
+                    factory = remember(context) {
+                        val database = AssignmentDatabase.getInstance(context)
+                        val repository = AssignmentRepository(database.assignmentDao())
+                        val service = AssignmentService(repository)
+                        DashboardViewModelFactory(service)
+                    }
+                )
+                DashboardScreen(
+                    viewModel = dashboardViewModel,
+                    onProfileClick = { navController.navigate(Routes.PROFILE) },
+                    onAssignmentClick = { assignmentId ->
+                        // TODO: Navigate to View Assignment
+                    }
+                )
             }
             composable(Routes.CALENDAR) {
                 PlaceholderScreen("Calendar")

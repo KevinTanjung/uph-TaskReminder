@@ -2,6 +2,7 @@ package edu.uph.learn.taskreminder.data.assignment
 
 import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
+import kotlinx.coroutines.flow.Flow
 
 class AssignmentService(
     private val repository: AssignmentRepository,
@@ -29,5 +30,12 @@ class AssignmentService(
         )
 
         repository.insert(assignment)
+    }
+
+    fun observeAssignmentsForCurrentUser(): Flow<List<Assignment>> {
+        val userId = auth.currentUser?.uid
+            ?: throw IllegalStateException("You must be signed in.")
+
+        return repository.observeAssignmentByUser(userId)
     }
 }
